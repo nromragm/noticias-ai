@@ -12,7 +12,6 @@ class NewsApiService
     {
         $response = Http::get('https://newsapi.org/v2/top-headlines', [
             'apiKey' => config('services.newsapi.key'),
-            //'language' => 'es',
             'country' => 'us',
         ]);
 
