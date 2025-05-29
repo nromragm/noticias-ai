@@ -28,11 +28,18 @@ new #[Layout('layouts.guest')] class extends Component
 
         $validated['password'] = Hash::make($validated['password']);
 
+        // Si el email es .env APP_EMAIL, se asigna el rol de admin
+        if ($validated['email'] === config('services.correoAdmin')) {
+            $validated['role'] = 'admin';
+        } else {
+            $validated['role'] = 'user';
+        }
+
         event(new Registered($user = User::create($validated)));
 
         Auth::login($user);
 
-        $this->redirect(route('dashboard', absolute: false), navigate: true);
+        $this->redirect(route('noticias.index', absolute: false), navigate: true);
     }
 }; ?>
 

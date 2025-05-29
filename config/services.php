@@ -21,6 +21,7 @@ return [
         'key' => env('OPENAI_API_KEY'),
     ],
     
+    'correoAdmin' => env('CORREO_ADMIN'),
 
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),

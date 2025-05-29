@@ -3,17 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <title>Noticias</title>
-    @vite('resources/sass/app.scss')
-    @vite('resources/css/app.css')
-    @vite('resources/js/app.js')
+    <script>
+        // Aplica el modo oscuro lo antes posible (antes de los CSS)
+        if (localStorage.getItem('theme') === 'dark'
+            || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        ) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    @vite(['resources/sass/app.scss', 'resources/js/app.js', 'resources/js/darkmode-boton.js', 'resources/css/app.css'])
     @livewireStyles
 </head>
 <body>
-    @include('components.header')
+    <livewire:layout.navigation />
     <!-- resources/views/inicio.blade.php -->
-    <livewire:noticias-principal />
-
+    <livewire:filtrar-noticias />
     @livewireScripts
 </body>
 </html>

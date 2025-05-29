@@ -19,8 +19,10 @@ return new class extends Migration
             $table->text('urlImg')->nullable();
             $table->string('source')->nullable();
             $table->text('contenido')->nullable(); // Para almacenar el contenido completo de la noticia
+            $table->string('categoria')->nullable(); // Para almacenar la categoría de la noticia
             $table->timestamp('published_at')->nullable();
             $table->timestamps();
+
         });
     }
 

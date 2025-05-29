@@ -20,7 +20,7 @@ new #[Layout('layouts.guest')] class extends Component
 
         Session::regenerate();
 
-        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+        $this->redirectIntended(default: route('noticias.index', absolute: false), navigate: true);
     }
 }; ?>
 
@@ -38,7 +38,7 @@ new #[Layout('layouts.guest')] class extends Component
 
         <!-- Password -->
         <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+            <x-input-label for="password" :value="__('Contraseña')" />
 
             <x-text-input wire:model="form.password" id="password" class="block mt-1 w-full"
                             type="password"
@@ -62,6 +62,10 @@ new #[Layout('layouts.guest')] class extends Component
                     {{ __('Forgot your password?') }}
                 </a>
             @endif
+
+            <x-secondary-button class="ms-6" wire:navigate href="{{ route('register') }}">
+                {{ __('Register') }}
+            </x-secondary-button>
 
             <x-primary-button class="ms-3">
                 {{ __('Log in') }}

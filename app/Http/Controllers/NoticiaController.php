@@ -12,8 +12,7 @@ class NoticiaController extends Controller
 {
     public function index()
     {
-        $noticias = Noticias::latest()->take(10)->get(); // puedes ajustar el número
-        return view('index', compact('noticias'));
+        return view('index');
     }
 
     public function show(Noticias $noticia)
