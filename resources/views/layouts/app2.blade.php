@@ -16,7 +16,8 @@
             document.documentElement.classList.remove('dark');
         }
     </script>
-    @vite(['resources/sass/app.scss', 'resources/js/app.js', 'resources/js/darkmode-boton.js', 'resources/css/app.css'])
+            <!--'resources/sass/app.scss', -->
+    @vite(['resources/js/app.js', 'resources/js/darkmode-boton.js', 'resources/css/app.css'])
     @livewireStyles
 
 </head>
