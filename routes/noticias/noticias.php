@@ -11,7 +11,12 @@ Route::prefix('/')->group(function () {
     Route::get('/noticias/{noticia}', NoticiaShow::class)->name('noticias.show');
 
     // Importar noticias desde la API
-    Route::post('/noticias/importar', [NoticiaController::class, 'importarDesdeApi'])
-        ->name('noticias.importar')
-        ->middleware('auth');
+    // Route::post('/noticias/importar', [NoticiaController::class, 'importarDesdeApi'])
+    //     ->name('noticias.importar')
+    //     ->middleware('auth');
+
+    // Borrar noticia
+    // Route::delete('/noticias/{noticia}', [NoticiaController::class, 'borrar'])
+    //     ->name('noticias.borrar')
+    //     ->middleware('auth');
 });

@@ -25,16 +25,18 @@ new class extends Component
 
         <div class="flex items-center gap-4">
 
-            <input
-                type="text"
-                id="search-global"
-                placeholder="Buscar noticias..."
-                class="form-input rounded-r-none w-64 h-10 bg-white text-gray-900 border-gray-300
-                    dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700
-                    focus:ring-blue-500 focus:border-blue-500 transition"
-                oninput="window.Livewire.dispatch('searchChanged', { value: event.target.value })"
-                onkeydown="if(event.key==='Enter'){window.Livewire.dispatch('searchChanged', { value: event.target.value })}"
-            />
+            <div class="flex-1 max-w-full sm:max-w-xs md:max-w-sm lg:max-w-md">
+                <input
+                    type="text"
+                    id="search-global"
+                    placeholder="Buscar noticias..."
+                    class="form-input w-full h-10 rounded-r-none bg-white text-gray-900 border-gray-300
+                        dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700
+                        focus:ring-blue-500 focus:border-blue-500 transition"
+                    oninput="window.Livewire.dispatch('searchChanged', { value: event.target.value })"
+                    onkeydown="if(event.key==='Enter'){window.Livewire.dispatch('searchChanged', { value: event.target.value })}"
+                />
+            </div>
 
             <!-- Botón modo oscuro -->
             <button id="toggle-dark" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition text-xl flex items-center justify-center w-8 h-8">
@@ -71,8 +73,8 @@ new class extends Component
                         </x-slot>
                         <x-slot name="content">
                             @if(auth()->user()->isAdmin())
-                                <a href="{{ route('noticias.index') }}" wire:navigate class="block px-4 py-2 text-gray-700 dark:text-gray-200 dark:hover:bg-gray-900 rounded transition">
-                                    Panel de administrador
+                                <a href="{{ route('admin') }}" wire:navigate class="block px-4 py-2 text-gray-700 dark:text-gray-200 dark:hover:bg-gray-900 rounded transition">
+                                    {{ __('Panel de administrador') }}
                                 </a>
                             @endif
                             <a href="{{ route('profile') }}" wire:navigate class="block px-4 py-2 text-gray-700 dark:text-gray-200 dark:hover:bg-gray-900 rounded transition">
@@ -111,7 +113,7 @@ new class extends Component
                     {{ auth()->user()->name }}
                 </div>
                 @if(auth()->user()->isAdmin())
-                  <x-dropdown-link :href="route('profile')" wire:navigate class="text-gray-700 dark:text-gray-200 dark:hover:bg-gray-900">
+                  <x-dropdown-link :href="route('admin')" wire:navigate class="text-gray-700 dark:text-gray-200 dark:hover:bg-gray-900">
                         {{ __('Panel de administrador') }}
                     </x-dropdown-link>
                 @endif

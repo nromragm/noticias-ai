@@ -11,3 +11,4 @@ Route::view('profile', 'profile')
 require __DIR__.'/auth.php';
 require __DIR__ . '/noticias/noticias.php';
 require __DIR__ . '/suscripciones/suscripciones.php';
+require __DIR__.'/admin/admin.php';

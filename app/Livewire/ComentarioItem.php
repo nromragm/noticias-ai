@@ -20,7 +20,10 @@ class ComentarioItem extends Component
 
     public function eliminar()
     {
-        if ($this->comentario->user_id === Auth::id()) {
+        if (
+            $this->comentario->user_id === Auth::id() ||
+            (Auth::check() && Auth::user()->isAdmin())
+        ) {
             $this->comentario->delete();
 
             // Emitir evento para que el componente refresque la lista

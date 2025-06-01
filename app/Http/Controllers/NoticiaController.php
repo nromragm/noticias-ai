@@ -35,5 +35,14 @@ class NoticiaController extends Controller
         return back()->with('success', 'Noticias importadas correctamente.');
     }
 
+    
+    // public function borrar(Noticias $noticia)
+    // {
+    //     if (auth()->check() && (auth()->user()->is_admin)) {
+    //         $noticia->delete();
+    //         return redirect()->route('noticias.index')->with('success', 'Noticia eliminada correctamente.');
+    //     }
+    //     return redirect()->route('noticias.index')->with('error', 'No tienes permiso para eliminar esta noticia.');
+    // }
 
 }

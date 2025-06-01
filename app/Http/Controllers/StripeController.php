@@ -27,7 +27,7 @@ class StripeController extends Controller
                 'quantity' => 1,
             ]],
             'mode' => 'payment',
-            'success_url' => route('checkout.exito'),
+            'success_url' => route('checkout.exito'). '?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url' => route('checkout.cancelado'),
             'metadata' => [
                 'user_id' => Auth::id(),
@@ -37,14 +37,35 @@ class StripeController extends Controller
         return redirect($session->url);
     }
 
-    public function success()
+    public function success(Request $request)
     {
-        // Marcar al usuario como premium
-        $user = Auth::user();
-        $user->is_premium = true;
-        $user->save();
+        $session_id = $request->get('session_id');
+        if (!$session_id) {
+            abort(403, 'No session_id provided');
+        }
 
-        return view('checkout.success');
+        // Configura la clave secreta de Stripe
+        \Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+
+        // Recupera la sesión de Stripe
+        $session = \Stripe\Checkout\Session::retrieve($session_id);
+
+        // Verifica que el pago esté completado
+        if ($session->payment_status === 'paid') {
+            // Obtén el usuario desde los metadatos
+            $userId = $session->metadata->user_id ?? null;
+            $user = $userId ? \App\Models\User::find($userId) : Auth::user();
+
+            if ($user && !$user->is_premium) {
+                $user->is_premium = true;
+                $user->save();
+            }
+
+            return view('checkout.success');
+        }
+
+        // Si el pago no está completado, muestra error
+        abort(403, 'El pago no fue completado.');
     }
 
     public function cancel()

@@ -14,13 +14,13 @@ class NewsApiService
     {
         $newsApi = new NewsApi(config('services.newsapi.key'));
         $categorias = $newsApi->getCategories();
-
+        $noticiasAgregadas = 0;
         if (!$categorias) {
             throw new \Exception('Error al obtener categorías de NewsAPI.');
         }
 
         foreach ($categorias as $categoria) {
-            $noticias = $newsApi->getTopHeadlines(null, null, null, $categoria, 3);
+            $noticias = $newsApi->getTopHeadlines(null, null, null, $categoria, 1);
 
             if ($noticias && isset($noticias->articles)) {
                 foreach ($noticias->articles as $article) {
@@ -49,12 +49,14 @@ class NewsApiService
                         'contenido' => $contenido,
                         'categoria' => $categoria,
                     ]);
+                    $noticiasAgregadas++;
                 }
             } else {
                 \Log::error("Error al obtener noticias para la categoría: $categoria");
-                throw new \Exception('Error al obtener noticias de NewsAPI para la categoría: ' . $categoria);
+                continue; // Sigue con la siguiente categoría
             }
         }
+        return $noticiasAgregadas;
     }
 
     private function generarContenido($titulo, $descripcion)
@@ -114,7 +116,8 @@ class NewsApiService
             'infosalus.com',
         ];
         $newsApi = new NewsApi(config('services.newsapi.key'));
-        
+        $noticiasAgregadas = 0;
+
         foreach ($dominios as $dominio) {
             $noticias = $newsApi->getEverything(
                 null,    // $q
@@ -161,12 +164,14 @@ class NewsApiService
                         'contenido' => $contenido,
                         'categoria' => $categoria,
                     ]);
+                    $noticiasAgregadas++;
                 }
             } else {
                 \Log::error("Error al obtener noticias en español desde NewsAPI para el dominio: $dominio");
                 continue; // Sigue con el siguiente dominio
             }
         }
+        return $noticiasAgregadas;
     }
 
     private function generarCategoria($titulo, $descripcion)

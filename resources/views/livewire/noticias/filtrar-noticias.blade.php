@@ -53,14 +53,19 @@
                 <div class="p-4 flex-1 flex flex-col">
                     <h2 class="text-lg font-semibold mb-2 text-gray-900 dark:text-white">{{ $noticia->titulo }}</h2>
                     <p class="text-sm text-gray-600 dark:text-gray-300 mb-3 flex-1 overflow-hidden">
-                        {{ Str::limit($noticia->contenido, 250) }}
+                        {{ Str::limit($noticia->contenido, 200) }}
                     </p>
                     <span class="text-xs text-gray-500 dark:text-gray-400 mt-auto flex items-center gap-2">
                         Categoría: {{ ucfirst($noticia->categoria) }}
                         <span>·</span>
-                        Fuente: {{ $noticia->source ?? 'Desconocida' }}
+                        {{ $noticia->source ?? 'Desconocida' }}
                         <span>·</span>
                         {{ \Carbon\Carbon::parse($noticia->published_at)->format('d/m/Y H:i') }}
+                        <span>·</span>
+                        <svg class="inline w-4 h-4 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+                        </svg>
+                        {{ $noticia->comentarios_count ?? $noticia->comentarios()->count() }}
                     </span>
                 </div>
             </div>
