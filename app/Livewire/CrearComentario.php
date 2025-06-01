@@ -34,6 +34,6 @@ class CrearComentario extends Component
 
     public function render()
     {
-        return view('livewire.crear-comentario');
+        return view('livewire.comentarios.crear-comentario');
     }
 }

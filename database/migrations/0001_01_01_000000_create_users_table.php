@@ -18,6 +18,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('role')->default('user'); // Por defecto, el rol es 'user'
+            $table->boolean('is_premium')->default(false); // Campo para indicar si el usuario es premium
             $table->rememberToken();
             $table->timestamps();
         });

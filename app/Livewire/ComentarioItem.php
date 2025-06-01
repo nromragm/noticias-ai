@@ -30,6 +30,6 @@ class ComentarioItem extends Component
 
     public function render()
     {
-        return view('livewire.comentario-item');
+        return view('livewire.comentarios.comentario-item');
     }
 }

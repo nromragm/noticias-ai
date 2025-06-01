@@ -22,6 +22,6 @@ class SeccionComentarios extends Component
     {
         $comentarios = $this->noticia->comentarios()->with('user')->latest()->get();
 
-        return view('livewire.seccion-comentarios', compact('comentarios'));
+        return view('livewire.comentarios.seccion-comentarios', compact('comentarios'));
     }
 }

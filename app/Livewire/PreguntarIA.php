@@ -20,10 +20,13 @@ class PreguntarIA extends Component
     public function preguntar()
     {
         $contenido = "Noticia: {$this->noticia->titulo}\n{$this->noticia->descripcion}\n\nPregunta: {$this->pregunta}";
+        $user = auth()->user();
+        $modelo = $user->is_premium ? 'gpt-4-turbo' : 'gpt-3.5-turbo';
 
         $response = Http::withToken(config('services.openai.key'))
             ->post('https://api.openai.com/v1/chat/completions', [
-                'model' => 'gpt-4o',
+                'model' => $modelo,
+                'max_tokens' => 1000,
                 'messages' => [
                     ['role' => 'user', 'content' => $contenido]
                 ],

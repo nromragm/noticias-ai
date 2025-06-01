@@ -27,7 +27,7 @@ a:hover {
     background-color: #111827; /* gris oscuro */
     color: #e5e7eb; /* texto claro */
 }
-
+    
 .dark header {
     background-color: #1f2937; /* gris más claro para el header */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);

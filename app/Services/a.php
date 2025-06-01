@@ -1,111 +1,77 @@
-<?php
-
-namespace App\Services;
-
-use App\Models\Noticias;
-use Illuminate\Support\Facades\Http;
-use OpenAI\Laravel\Facades\OpenAI;
-use jcobhams\NewsApi\NewsApi;
-
-class NewsApiService
-{
-    public function fetchAndStore()
+    public function fetchAndStoreSpanish()
     {
         $newsApi = new NewsApi(config('services.newsapi.key'));
-
         $categorias = $newsApi->getCategories();
 
-        if (!$categorias) {
+        $language = 'es'; // Español
+        $country = 'es'; // España
+
+        if (!$categorias || !is_array($categorias)) {
+            \Log::error("Error al obtener categorías de NewsAPI.");
             throw new \Exception('Error al obtener categorías de NewsAPI.');
-            
-        } else {
-            foreach ($categorias as $categoria) {
+        }
 
-                $noticias = $newsApi->getTopHeadlines(null, null, null, $categoria, 20, 1);
+        foreach ($categorias as $categoria) {
+            $sourcesResponse = $newsApi->getSources($categoria, $language, null);
 
-                
+            if (
+                !$sourcesResponse ||
+                !isset($sourcesResponse->sources) ||
+                !is_array($sourcesResponse->sources) ||
+                empty($sourcesResponse->sources)
+            ) {
+                \Log::error("Error al obtener fuentes de NewsAPI.");
+                continue;
+            }
 
-                 // Maneja $topHeadlines: por ejemplo guardarlos o procesarlos
+            foreach ($sourcesResponse->sources as $source) {
+
+                $noticias = $newsApi->getEverything(
+                    null,    // $q
+                    $source->id,    // $sources
+                    null,    // $domains
+                    null,    // $exclude_domains
+                    null,    // $from
+                    null,    // $to
+                    $language,    // $language
+                    null,    // $sortBy
+                    2,      // $pageSize
+                    null     // $page
+                );
+
                 if ($noticias && isset($noticias->articles)) {
                     foreach ($noticias->articles as $article) {
+                        if (
+                            empty($article->title) ||
+                            empty($article->description) ||
+                            empty($article->url) ||
+                            empty($article->urlToImage)
+                        ) {
+                            continue;
+                        }
+
+                        if (Noticias::where('url', $article->url)->exists()) {
+                            continue;
+                        }
+
+                        $contenido = $this->generarContenido($article->title, $article->description);
                         
+
+                        Noticias::create([
+                            'titulo' => $article->title,
+                            'descripcion' => $article->description,
+                            'url' => $article->url,
+                            'urlImg' => $article->urlToImage,
+                            'source' => $source->name ?? null,
+                            'published_at' => date('Y-m-d H:i:s', strtotime($article->publishedAt)),
+                            'contenido' => $contenido,
+                            'categoria' => $categoria ?? 'general', // Asignar categoría o 'general' si no se especifica
+                        ]);
                     }
-
                 } else {
-                    throw new \Exception('Error al obtener noticias de NewsAPI para la categoría: ' . $categoria);
+                    \Log::error("Error al obtener noticias de la fuente: {$source->name}");
+                    throw new \Exception('Error al obtener noticias de NewsAPI para la fuente: ' . $source->name);
                 }
             }
-        }
-
-        $response = Http::get('https://newsapi.org/v2/top-headlines', [
-            'apiKey' => config('services.newsapi.key'),
-            'country' => 'us',
-        ]);
-
-
-        if (!$response->successful()) {
-            throw new \Exception('Error al obtener noticias de NewsAPI.');
-        }
-
-        $articles = $response['articles'];
-
-        foreach ($articles as $article) {
-            
-            if (
-                !isset($article['title']) || trim($article['title']) === '' ||
-                !isset($article['description']) || trim($article['description']) === '' ||
-                !isset($article['url']) || trim($article['url']) === ''
-            ) {
-                continue; // saltar si falta alguno
-            }
-
-            $noticia = Noticias::where('url', $article['url'])->first();
-
-            if (!$noticia) {
-                // Solo generar contenido si no existe la noticia
-                $prompt = "Redacta una noticia a partir del siguiente título y descripción. Devuelve solo un JSON con dos campos: \"contenido\" y \"categoria\". La categoría debe ser una de: deportes, politica, tecnologia, cultura, salud.\n\n"
-                . "Título: {$article['title']}\n"
-                . "Descripción: {$article['description']}\n\n"
-                . "Ejemplo de respuesta: {\"contenido\": \"Texto redactado aquí...\", \"categoria\": \"deportes\"}";
-
-
-                $response = Http::withToken(config('services.openai.key'))
-                    ->post('https://api.openai.com/v1/chat/completions', [
-                        'model' => 'gpt-4o',
-                        'messages' => [
-                            ['role' => 'user', 'content' => $prompt]
-                        ],
-                        'max_tokens' => 800,
-                        'temperature' => 0.7,
-                    ]);
-
-                $rawContent = $response->json('choices.0.message.content') ?? '{}';
-
-                // Intentar decodificar la respuesta como JSON
-                $data = json_decode($rawContent, true);
-
-                if (json_last_error() !== JSON_ERROR_NONE) {
-                    // Si no es JSON válido, fallback a contenido simple y categoría default
-                    $contenido = $rawContent;
-                    $categoria = 'sincategoria';
-                } else {
-                    $contenido = $data['contenido'] ?? 'Contenido no disponible';
-                    $categoria = $data['categoria'] ?? 'sincategoria';
-                }
-
-                Noticias::create([
-                    'titulo' => $article['title'],
-                    'descripcion' => $article['description'],
-                    'url' => $article['url'],
-                    'urlImg' => $article['urlToImage'],
-                    'source' => $article['source']['name'] ?? null,
-                    'published_at' => date('Y-m-d H:i:s', strtotime($article['publishedAt'])),
-                    'contenido' => $contenido,
-                    'categoria' => in_array($categoria, Noticias::CATEGORIAS) ? $categoria : 'sincategoria',
-                ]);
-            }
-
-            // Si la noticia ya existe, no hacemos nada
         }
     }
-}

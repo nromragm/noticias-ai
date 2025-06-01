@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="es">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+
+        <title>@yield('title', 'NoticIA')</title>
         <script>
             // Aplica el modo oscuro lo antes posible (antes de los CSS)
             if (localStorage.getItem('theme') === 'dark'
@@ -17,27 +18,25 @@
             }
         </script>
         <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-    
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
         <!-- Scripts -->
         <!--'resources/sass/app.scss', -->
-        @vite(['resources/js/app.js', 'resources/js/darkmode-boton.js', 'resources/css/app.css'])
-
+        @vite(['resources/js/app.js', 'resources/js/darkmode-boton.js', 'resources/js/darkmode-auto.js', 'resources/css/app.css'])
+        @livewireStyles
     </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            <livewire:layout.navigation />
+    <body class="bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-white transition-colors duration-300">
+
 
             <!-- Page Heading -->
-                @livewireStyles
+            <livewire:layout.navigation />
 
             <!-- Page Content -->
             <main>
                 {{ $slot }}
             </main>
-        </div>
+   
+
         @livewireScripts
     </body>
 </html>

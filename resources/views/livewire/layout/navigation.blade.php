@@ -24,6 +24,18 @@ new class extends Component
         </a>
 
         <div class="flex items-center gap-4">
+
+            <input
+                type="text"
+                id="search-global"
+                placeholder="Buscar noticias..."
+                class="form-input rounded-r-none w-64 h-10 bg-white text-gray-900 border-gray-300
+                    dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700
+                    focus:ring-blue-500 focus:border-blue-500 transition"
+                oninput="window.Livewire.dispatch('searchChanged', { value: event.target.value })"
+                onkeydown="if(event.key==='Enter'){window.Livewire.dispatch('searchChanged', { value: event.target.value })}"
+            />
+
             <!-- Botón modo oscuro -->
             <button id="toggle-dark" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 transition text-xl flex items-center justify-center w-8 h-8">
                 <!-- Luna minimalista -->
@@ -43,6 +55,12 @@ new class extends Component
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white dark:bg-gray-900 hover:text-gray-700 dark:hover:text-blue-300 focus:outline-none transition ease-in-out duration-150">
+                                @if(auth()->user()->is_premium)
+                                    <!-- Icono estrella premium -->
+                                    <svg class="h-4 w-4 text-yellow-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.175c.969 0 1.371 1.24.588 1.81l-3.38 2.455a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.54 1.118l-3.38-2.455a1 1 0 00-1.175 0l-3.38 2.455c-.784.57-1.838-.197-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.05 9.394c-.783-.57-.38-1.81.588-1.81h4.175a1 1 0 00.95-.69l1.286-3.967z"/>
+                                    </svg>
+                                @endif
                                 <div x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.name"></div>
                                 <div class="ms-1">
                                     <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -52,6 +70,11 @@ new class extends Component
                             </button>
                         </x-slot>
                         <x-slot name="content">
+                            @if(auth()->user()->isAdmin())
+                                <a href="{{ route('noticias.index') }}" wire:navigate class="block px-4 py-2 text-gray-700 dark:text-gray-200 dark:hover:bg-gray-900 rounded transition">
+                                    Panel de administrador
+                                </a>
+                            @endif
                             <a href="{{ route('profile') }}" wire:navigate class="block px-4 py-2 text-gray-700 dark:text-gray-200 dark:hover:bg-gray-900 rounded transition">
                                 {{ __('Perfil') }}
                             </a>
@@ -87,6 +110,11 @@ new class extends Component
                 <div class="px-4 py-2 text-gray-800 dark:text-gray-200 font-semibold">
                     {{ auth()->user()->name }}
                 </div>
+                @if(auth()->user()->isAdmin())
+                  <x-dropdown-link :href="route('profile')" wire:navigate class="text-gray-700 dark:text-gray-200 dark:hover:bg-gray-900">
+                        {{ __('Panel de administrador') }}
+                    </x-dropdown-link>
+                @endif
                 <x-dropdown-link :href="route('profile')" wire:navigate class="text-gray-700 dark:text-gray-200 dark:hover:bg-gray-900">
                     {{ __('Profile') }}
                 </x-dropdown-link>
