@@ -44,9 +44,22 @@
     "scripts": {
         "post-install-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
+            "@php artisan storage:link --force",
+            "@php artisan vendor:publish --tag=livewire-assets --ansi --force",
+            "@php artisan vendor:publish --tag=volt-assets --ansi --force",
+            "@php artisan vendor:publish --tag=volt-views --ansi --force",
+            "@php artisan vendor:publish --tag=volt-config --ansi --force",
+            "@php artisan vendor:publish --tag=volt-translations --ansi --force",
+            "@php artisan vendor:publish --tag=volt-components --ansi --force",
+            "@php artisan vendor:publish --tag=volt-helpers --ansi --force",
+            "@php artisan vendor:publish --tag=volt-helpers-views --ansi --force",
+            "@php artisan vendor:publish --tag=jetstream-assets --ansi --force",
+            "@php artisan vendor:publish --tag=jetstream-views --ansi --force",
+            "@php artisan vendor:publish --tag=jetstream-config --ansi --force",
             "@php artisan config:cache",
             "@php artisan route:cache",
             "@php artisan view:cache",
+            "@php artisan optimize:clear",
             "php -r 'sleep(60);'", 
             "@php artisan migrate --force"
         ],
