@@ -10,6 +10,11 @@ use Stripe\Checkout\Session as StripeSession;
 
 class StripeController extends Controller
 {
+    /**
+     * Crea una sesión de pago con Stripe y redirige al usuario a la página de pago.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function checkout()
     {
         Stripe::setApiKey(config('services.stripe.secret'));
@@ -37,6 +42,12 @@ class StripeController extends Controller
         return redirect($session->url);
     }
 
+    /**
+     * Maneja la respuesta de éxito después del pago.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\View\View
+     */
     public function success(Request $request)
     {
         $session_id = $request->get('session_id');
@@ -68,6 +79,11 @@ class StripeController extends Controller
         abort(403, 'El pago no fue completado.');
     }
 
+    /**
+     * Maneja la respuesta de cancelación después del pago.
+     *
+     * @return \Illuminate\View\View
+     */
     public function cancel()
     {
         return view('checkout.cancel');

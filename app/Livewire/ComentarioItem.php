@@ -18,6 +18,7 @@ class ComentarioItem extends Component
         $this->comentario->loadMissing('user');
     }
 
+    // Validar que el usuario tiene permiso para eliminar el comentario y si es así, eliminarlo
     public function eliminar()
     {
         if (

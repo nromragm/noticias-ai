@@ -19,7 +19,7 @@ class FetchNoticias extends Command
      *
      * @var string
      */
-    protected $description = 'Obtiene y guarda noticias desde NewsAPI';
+    protected $description = 'Obtiene y guarda noticias en español desde NewsAPI';
 
     /**
      * Execute the console command.

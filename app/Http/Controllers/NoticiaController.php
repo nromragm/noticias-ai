@@ -11,11 +11,14 @@ use App\Services\NewsApiService;
 
 class NoticiaController extends Controller
 {
+
+    // Devuelve la vista principal de noticias
     public function index()
     {
         return view('index');
     }
 
+    // Devuelve la vista de noticia en concreto y sus comentarios
     public function show(Noticias $noticia)
     {
         $comentarios = $noticia->comentarios()->with('user')->latest()->get();
@@ -23,7 +26,7 @@ class NoticiaController extends Controller
     }
 
 
-    //si el usuario es admin, puede pueda importar noticias desde la API, si no, redirige a la página de inicio
+    // Si el usuario es admin, puede importar noticias desde la API, si no, redirige a la página de inicio
     public function importarDesdeApi(NewsApiService $service)
     {
         if (!auth()->check() || !auth()->user()->is_admin) {
@@ -34,15 +37,4 @@ class NoticiaController extends Controller
         $service->fetchAndStore();
         return back()->with('success', 'Noticias importadas correctamente.');
     }
-
-    
-    // public function borrar(Noticias $noticia)
-    // {
-    //     if (auth()->check() && (auth()->user()->is_admin)) {
-    //         $noticia->delete();
-    //         return redirect()->route('noticias.index')->with('success', 'Noticia eliminada correctamente.');
-    //     }
-    //     return redirect()->route('noticias.index')->with('error', 'No tienes permiso para eliminar esta noticia.');
-    // }
-
 }

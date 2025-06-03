@@ -16,6 +16,7 @@ class NoticiaShow extends Component
         $this->noticia = $noticia;
     }
 
+    
     public function render()
     {
         return view('livewire.noticias.noticia-show', [

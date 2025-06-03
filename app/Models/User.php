@@ -60,6 +60,11 @@ class User extends Authenticatable
             ->implode('');
     }
 
+    /**
+     * Determine if the user is an admin.
+     *
+     * @return bool
+     */
     public function isAdmin(): bool
     {
         return $this->role === 'admin';

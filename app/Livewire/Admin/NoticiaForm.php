@@ -23,6 +23,13 @@ class NoticiaForm extends Component
         'urlImg' => 'nullable|url|max:255',
     ];
 
+
+    /**
+     * Importa noticias desde la API de NewsAPI.
+     *
+     * @param string $idioma Idioma de las noticias a importar ('en' o 'es').
+     * 
+     */
     public function importarNoticias($idioma = 'en')
     {
         set_time_limit(300); // Asegura que el script no se detenga por tiempo de ejecución
@@ -47,6 +54,7 @@ class NoticiaForm extends Component
         }
     }
 
+    
     public function save()
     {
         $this->validate();
