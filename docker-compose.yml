@@ -27,14 +27,14 @@ services:
     container_name: mysql_db
     restart: always
     environment:
-      MYSQL_DATABASE: noticias_bdd
+      MYSQL_DATABASE: ianoticias_bdd
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: laravel
       MYSQL_PASSWORD: laravel
     ports:
       - "3307:3306"
     volumes:
-      - dbdata:/var/lib/mysql
+      - dbdata2:/var/lib/mysql
 
 volumes:
-  dbdata:
+  dbdata2:
