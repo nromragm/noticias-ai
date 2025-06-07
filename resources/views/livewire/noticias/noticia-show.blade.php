@@ -20,6 +20,12 @@
                 {!! $noticia->contenido !!}
             </div>
 
+            {{-- Valorar noticia --}}
+            <div class="my-8">
+                <livewire:valorar-noticia :noticia="$noticia" />
+            </div>
+
+            {{-- Preguntar IA --}}
             <div class="my-8">
                 <livewire:preguntar-i-a :noticia="$noticia" />
             </div>
@@ -31,7 +37,8 @@
                 </h2>
 
                 @auth
-                    <livewire:crear-comentario :noticia="$noticia" />
+                    {{-- Comentarios --}}
+                    <livewire:comentarios.crear-comentario :noticia="$noticia" />
                 @else
                     <div class="mb-6 p-4 bg-blue-50 dark:bg-gray-900 rounded text-blue-700 dark:text-blue-200">
                         <a href="{{ route('login') }}" class="underline hover:text-blue-900 dark:hover:text-white transition">
@@ -40,7 +47,9 @@
                     </div>
                 @endauth
 
-                <livewire:seccion-comentarios :noticia="$noticia" />
+                <livewire:comentarios.seccion-comentarios :noticia="$noticia" />
+
+                
             </div>
         </div>
     </div>

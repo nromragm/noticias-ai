@@ -10,18 +10,51 @@ class NoticiaForm extends Component
 {
     public $noticiaId = null;
     public $titulo = '';
+    public $descripcion = '';
     public $contenido = '';
     public $categoria = '';
     public $source = '';
     public $urlImg = '';
+    public $categorias = [];
 
     protected $rules = [
         'titulo' => 'required|string|max:255',
+        'descripcion' => 'required|string|max:255',
         'contenido' => 'required|string',
         'categoria' => 'required|string|max:100',
-        'source' => 'nullable|string|max:100',
-        'urlImg' => 'nullable|url|max:255',
+        'source' => 'required|string|max:100',
+        'urlImg' => 'required|url|max:255',
     ];
+
+    protected $listeners = ['editarNoticia'];
+
+    public function mount($id = null)
+    {
+        $this->categorias = \App\Models\Noticias::CATEGORIAS;
+
+        if ($id) {
+            $noticia = \App\Models\Noticias::findOrFail($id);
+            $this->noticiaId = $noticia->id;
+            $this->titulo = $noticia->titulo;
+            $this->descripcion = $noticia->descripcion;
+            $this->contenido = $noticia->contenido;
+            $this->categoria = $noticia->categoria;
+            $this->source = $noticia->source;
+            $this->urlImg = $noticia->urlImg;
+        }
+    }
+
+    public function editarNoticia($id)
+    {
+        $noticia = \App\Models\Noticias::findOrFail($id);
+        $this->noticiaId = $noticia->id;
+        $this->titulo = $noticia->titulo;
+        $this->descripcion = $noticia->descripcion;
+        $this->contenido = $noticia->contenido;
+        $this->categoria = $noticia->categoria;
+        $this->source = $noticia->source;
+        $this->urlImg = $noticia->urlImg;
+    }
 
 
     /**
@@ -55,21 +88,44 @@ class NoticiaForm extends Component
     }
 
     
+    /**
+     * Guarda la noticia, ya sea actualizando una existente o creando una nueva.
+     *
+     */
     public function save()
     {
         $this->validate();
 
-        Noticias::create([
-            'titulo' => $this->titulo,
-            'contenido' => $this->contenido,
-            'categoria' => $this->categoria,
-            'source' => $this->source,
-            'urlImg' => $this->urlImg,
-        ]);
+        try {
+            if ($this->noticiaId) {
+                $noticia = \App\Models\Noticias::findOrFail($this->noticiaId);
+                $noticia->update([
+                    'titulo' => $this->titulo,
+                    'descripcion' => $this->descripcion,
+                    'contenido' => $this->contenido,
+                    'categoria' => $this->categoria,
+                    'source' => $this->source,
+                    'urlImg' => $this->urlImg,
+                ]);
+                session()->flash('success', 'Noticia actualizada correctamente.');
+            } else {
+                \App\Models\Noticias::create([
+                    'titulo' => $this->titulo,
+                    'descripcion' => $this->descripcion,
+                    'contenido' => $this->contenido,
+                    'categoria' => $this->categoria,
+                    'source' => $this->source,
+                    'urlImg' => $this->urlImg,
+                    'published_at' => now(),
+                ]);
+                session()->flash('success', 'Noticia añadida correctamente.');
+            }
 
-        $this->reset(['titulo', 'contenido', 'categoria', 'source', 'urlImg']);
-        $this->dispatch('noticiaGuardada');
-        session()->flash('success', 'Noticia añadida correctamente.');
+            $this->reset(['noticiaId', 'titulo', 'descripcion', 'contenido', 'categoria', 'source', 'urlImg']);
+            $this->dispatch('noticiaGuardada');
+        } catch (\Exception $e) {
+            session()->flash('error', 'Error al guardar la noticia: ' . $e->getMessage());
+        }
     }
 
     public function render()

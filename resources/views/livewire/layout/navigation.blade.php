@@ -17,22 +17,21 @@ new class extends Component
 }; ?>
 
 <header x-data="{ open: false }" class="bg-white dark:bg-gray-800 shadow-md dark:shadow-lg transition-colors">
-    <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+    <div class="container mx-auto px-4 py-4 flex flex-wrap items-center justify-between gap-2">
         <!-- Logo -->
-        <a href="{{ route('noticias.index') }}" class="text-2xl font-bold text-blue-600 dark:text-blue-300 hover:text-blue-800">
+        <a href="{{ route('noticias.index') }}" class="text-2xl font-bold text-blue-600 dark:text-blue-300 hover:text-blue-800 flex-shrink-0">
             NoticIA
         </a>
 
-        <div class="flex items-center gap-4">
-
-            <div class="flex-1 max-w-full sm:max-w-xs md:max-w-sm lg:max-w-md">
+        <div class="flex items-center gap-4 flex-1 justify-end">
+            <div class="w-28 sm:w-48 md:w-64 lg:w-full">
                 <input
                     type="text"
                     id="search-global"
                     placeholder="Buscar noticias..."
-                    class="form-input w-full h-10 rounded-r-none bg-white text-gray-900 border-gray-300
+                    class="form-input w-full h-9 sm:h-10 rounded-r-none bg-white text-gray-900 border-gray-300
                         dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700
-                        focus:ring-blue-500 focus:border-blue-500 transition"
+                        focus:ring-blue-500 focus:border-blue-500 transition text-sm sm:text-base"
                     oninput="window.Livewire.dispatch('searchChanged', { value: event.target.value })"
                     onkeydown="if(event.key==='Enter'){window.Livewire.dispatch('searchChanged', { value: event.target.value })}"
                 />

@@ -17,11 +17,17 @@
         <tbody>
             @forelse($noticias as $noticia)
                 <tr class="border-b border-gray-100 dark:border-gray-700">
-                    <td class="py-2">{{ $noticia->titulo }}</td>
+                    <td class="py-2">{{ \Illuminate\Support\Str::limit($noticia->titulo, 60) }}</td>
                     <td class="py-2">{{ $noticia->categoria }}</td>
                     <td class="py-2">{{ $noticia->created_at->format('d/m/Y H:i') }}</td>
                     <td class="py-2 text-right">
                         <button wire:click="delete({{ $noticia->id }})" class="text-red-600 hover:underline">Eliminar</button>
+                         |
+                        <button wire:click="editar({{ $noticia->id }})"
+                            onclick="window.scrollTo({top:0,behavior:'smooth'})"
+                            class="text-blue-600 hover:underline ms-2">
+                            Editar
+                        </button>
                     </td>
                 </tr>
             @empty

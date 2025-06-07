@@ -6,7 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
 
-        <title>@yield('title', 'NoticIA')</title>
+        <title>NoticIA</title>
         <script>
             // Aplica el modo oscuro lo antes posible (antes de los CSS)
             if (localStorage.getItem('theme') === 'dark'
@@ -25,17 +25,19 @@
         @vite(['resources/js/app.js', 'resources/js/darkmode-boton.js', 'resources/js/darkmode-auto.js', 'resources/css/app.css'])
         @livewireStyles
     </head>
-    <body class="bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-white transition-colors duration-300">
+    <body class="min-h-screen flex flex-col bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-white transition-colors duration-300">
+        <!-- Page Heading -->
+        <livewire:layout.navigation />
 
+        <!-- Page Content -->
+        <main class="flex-1">
+            {{ $slot }}
+        </main>
 
-            <!-- Page Heading -->
-            <livewire:layout.navigation />
-
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
-   
+        {{-- Footer --}}
+        <footer class="text-center text-sm text-gray-500 py-4 dark:text-gray-400">
+            &copy; {{ now()->year }} NoticIA. Todos los derechos reservados.
+        </footer>
 
         @livewireScripts
     </body>

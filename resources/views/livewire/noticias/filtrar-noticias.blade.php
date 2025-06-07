@@ -1,6 +1,6 @@
 <div class="container mx-auto px-4 py-8">
 
-    {{-- Selector de orden como botones --}}
+    {{-- Filtro --}}
     <div class="flex flex-wrap justify-center gap-2 mb-6">
         <button
             wire:click="$set('orden', 'desc')"
@@ -66,6 +66,12 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
                         </svg>
                         {{ $noticia->comentarios_count ?? $noticia->comentarios()->count() }}
+                        {{-- Aquí agregamos la valoración --}}
+                        <span>·</span>
+                        <svg class="inline w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                            <polygon points="10,1 12.59,7.36 19.51,7.64 14,12.26 15.82,19.02 10,15.27 4.18,19.02 6,12.26 0.49,7.64 7.41,7.36"/>
+                        </svg>
+                        {{ number_format($noticia->valoracionPromedio(), 1, ',', '') ?? '0,0' }}
                     </span>
                 </div>
             </div>
@@ -85,7 +91,7 @@
     @endif
 
 
-    <!-- Botón flotante "Ir arriba" -->
+    {{-- Botón Ir arriba --}}
     <button
         onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
         class="fixed bottom-6 right-6 z-50 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg p-3 transition flex items-center justify-center"

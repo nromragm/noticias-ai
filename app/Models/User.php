@@ -73,5 +73,10 @@ class User extends Authenticatable
     public function comentarios()
     {
         return $this->hasMany(Comentarios::class);
-    } 
+    }
+    
+    public function valoraciones()
+    {
+        return $this->hasMany(Valoracion::class);
+    }
 }

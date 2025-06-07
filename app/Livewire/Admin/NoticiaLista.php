@@ -17,6 +17,11 @@ class NoticiaLista extends Component
         session()->flash('success', 'Noticia eliminada.');
     }
 
+    public function editar($id)
+    {
+        $this->dispatch('editarNoticia', $id)->to('admin.noticia-form');
+    }
+
     public function render()
     {
         return view('livewire.admin.noticia-lista', [

@@ -33,5 +33,22 @@ class Noticias extends Model
         return $this->hasMany(Comentarios::class, 'noticia_id');
     }
 
-    
+    public function valoraciones()
+    {
+        return $this->hasMany(Valoracion::class, 'noticia_id');
+    }
+
+    public function valoracionPromedio()
+    {
+        return $this->valoraciones()->avg('valor');
+    }
+
+    public function relacionadas($limit = 3)
+    {
+        return self::where('id', '!=', $this->id)
+            ->where('categoria', $this->categoria)
+            ->latest()
+            ->limit($limit)
+            ->get();
+    }
 }

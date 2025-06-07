@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('titulo');
             $table->text('descripcion')->nullable();
-            $table->string('url')->unique(); // clave única para evitar duplicados
-            $table->text('urlImg')->nullable();
-            $table->string('source')->nullable();
-            $table->text('contenido')->nullable(); // Para almacenar el contenido completo de la noticia
-            $table->string('categoria')->nullable(); // Para almacenar la categoría de la noticia
+            $table->string('url')->nullable();
+            $table->text('urlImg');
+            $table->string('source');
+            $table->text('contenido');
+            $table->string('categoria');
             $table->timestamp('published_at')->nullable();
             $table->timestamps();
 

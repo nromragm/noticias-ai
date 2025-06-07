@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Comentarios;
 
 use Livewire\Component;
 use App\Models\Comentarios;

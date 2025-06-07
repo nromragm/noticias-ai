@@ -18,11 +18,15 @@ class PreguntarIA extends Component
     }
 
 
+    /**
+     * Método para preguntar a la IA sobre la noticia.
+     * Utiliza el modelo de OpenAI para generar una respuesta basada en la noticia y la pregunta del usuario.
+     */
     public function preguntar()
     {
         $contenido = "Noticia: {$this->noticia->titulo}\n{$this->noticia->descripcion}\n\nPregunta: {$this->pregunta}";
         $user = auth()->user();
-        $modelo = $user->is_premium ? 'gpt-4-turbo' : 'gpt-3.5-turbo';
+        $modelo = ($user && $user->is_premium) ? 'gpt-4-turbo' : 'gpt-3.5-turbo';
 
         // Elige el modelo de OpenAI en función del tipo de usuario: los usuarios premium usan GPT-4 Turbo, los demás usan GPT-3.5 Turbo
         $response = Http::withToken(config('services.openai.key'))

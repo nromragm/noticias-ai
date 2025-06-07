@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- En el <head> -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <title>@yield('title', 'Noticias')</title>
+    <title>NoticIA</title>
     <script>
         // Aplica el modo oscuro lo antes posible (antes de los CSS)
         if (localStorage.getItem('theme') === 'dark'
@@ -31,7 +31,7 @@
         {{ $slot }}
     </main>
 
-    {{-- Footer opcional --}}
+    {{-- Footer --}}
     <footer class="text-center text-sm text-gray-500 py-4 dark:text-gray-400">
         &copy; {{ now()->year }} NoticIA. Todos los derechos reservados.
     </footer>
