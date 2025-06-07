@@ -47,7 +47,7 @@ class Noticias extends Model
     {
         return self::where('id', '!=', $this->id)
             ->where('categoria', $this->categoria)
-            ->latest()
+            ->inRandomOrder()
             ->limit($limit)
             ->get();
     }

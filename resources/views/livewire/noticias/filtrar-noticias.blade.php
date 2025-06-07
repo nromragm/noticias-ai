@@ -66,7 +66,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
                         </svg>
                         {{ $noticia->comentarios_count ?? $noticia->comentarios()->count() }}
-                        {{-- Aquí agregamos la valoración --}}
+                        {{-- Valoración --}}
                         <span>·</span>
                         <svg class="inline w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
                             <polygon points="10,1 12.59,7.36 19.51,7.64 14,12.26 15.82,19.02 10,15.27 4.18,19.02 6,12.26 0.49,7.64 7.41,7.36"/>

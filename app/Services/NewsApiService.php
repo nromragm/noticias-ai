@@ -53,7 +53,8 @@ class NewsApiService
                     }
 
                     // Genera el contenido de la noticia usando OpenAI
-                    $contenido = $this->generarContenido($article->title, $article->description);
+                    $idioma = 'en'; // Idioma de la noticia
+                    $contenido = $this->generarContenido($article->title, $article->description, $idioma);
 
                     // Crea la noticia en la base de datos
                     Noticias::create([
@@ -83,17 +84,25 @@ class NewsApiService
      *
      * @param string $titulo Título de la noticia
      * @param string $descripcion Descripción de la noticia
+     * @param string $idioma Idioma en el que se generará el contenido ('es' o 'en')
      * @return string Contenido generado por OpenAI
      */
-    private function generarContenido($titulo, $descripcion)
+    private function generarContenido($titulo, $descripcion, $idioma = 'es')
     {
         
         try {
             // Prepara el prompt para OpenAI
-            $prompt = "Redacta una noticia a partir del siguiente título y descripción. Devuelve solo un JSON con un campo: \"contenido\"\n\n"
-                . "Título: {$titulo}\n"
-                . "Descripción: {$descripcion}\n\n"
-                . "Ejemplo de respuesta: {\"contenido\": \"Texto redactado aquí\"}";
+            if ($idioma == 'en') {
+                $prompt = "Write a news article based on the following title and description. Return only a JSON with one field: \"contenido\"\n\n"
+                    . "Title: {$titulo}\n"
+                    . "Description: {$descripcion}\n\n"
+                    . "Example response: {\"contenido\": \"Written text here\"}";
+            } else {
+                $prompt = "Redacta una noticia a partir del siguiente título y descripción. Devuelve solo un JSON con un campo: \"contenido\"\n\n"
+                    . "Título: {$titulo}\n"
+                    . "Descripción: {$descripcion}\n\n"
+                    . "Ejemplo de respuesta: {\"contenido\": \"Texto redactado aquí\"}";
+            }
 
             // Realiza la solicitud a OpenAI para generar el contenido
             $response = Http::timeout(120)

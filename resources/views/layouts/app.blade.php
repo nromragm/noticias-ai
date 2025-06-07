@@ -36,7 +36,7 @@
 
         {{-- Footer --}}
         <footer class="text-center text-sm text-gray-500 py-4 dark:text-gray-400">
-            &copy; {{ now()->year }} NoticIA. Todos los derechos reservados.
+            &copy; {{ now()->year }} NoticIA. Todos los derechos reservados. <a href="/aboutNoticIA">Sobre NoticIA.</a>
         </footer>
 
         @livewireScripts

@@ -17,14 +17,13 @@
             }
         </script>
         <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     
 
         <!-- Scripts -->
         <!--'resources/sass/app.scss', -->
         @vite(['resources/js/app.js', 'resources/js/darkmode-boton.js', 'resources/js/darkmode-auto.js', 'resources/css/app.css'])
-
+        @livewireStyles
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
@@ -37,6 +36,11 @@
             <main>
                 @yield('content')
             </main>
+
+            <!-- Footer -->
+            <footer class="text-center text-sm text-gray-500 py-4 dark:text-gray-400">
+                &copy; {{ now()->year }} NoticIA. Todos los derechos reservados. <a href="/aboutNoticIA">Sobre NoticIA.</a>
+            </footer>
         </div>
         @livewireScripts
     </body>

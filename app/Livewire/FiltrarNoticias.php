@@ -43,7 +43,7 @@ class FiltrarNoticias extends Component
         $this->porPagina = 9;
     }
 
-     // Renderiza la vista del componente
+    // Renderiza la vista del componente
     public function render()
     {
         // Crea una consulta base
@@ -58,7 +58,8 @@ class FiltrarNoticias extends Component
         if ($this->search) {
             $query->where(function ($q) {
                 $q->where('titulo', 'like', '%' . $this->search . '%')
-                  ->orWhere('descripcion', 'like', '%' . $this->search . '%');
+                ->orWhere('descripcion', 'like', '%' . $this->search . '%')
+                ->orWhere('contenido', 'like', '%' . $this->search . '%');
             });
         }
         

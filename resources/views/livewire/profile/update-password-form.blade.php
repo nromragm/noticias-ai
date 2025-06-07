@@ -68,9 +68,9 @@ new class extends Component
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
         <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
+            <x-primary-button>{{ __('Guardar') }}</x-primary-button>
             <x-action-message class="me-3" on="password-updated">
-                {{ __('Saved.') }}
+                {{ __('Guardado.') }}
             </x-action-message>
         </div>
     </form>

@@ -28,6 +28,11 @@ class NoticiaForm extends Component
 
     protected $listeners = ['editarNoticia'];
 
+    /**
+     * Inicializa el componente con los datos de la noticia si se proporciona un ID.
+     *
+     * @param int|null $id ID de la noticia a editar, si es null se crea una nueva.
+     */
     public function mount($id = null)
     {
         $this->categorias = \App\Models\Noticias::CATEGORIAS;
@@ -44,6 +49,12 @@ class NoticiaForm extends Component
         }
     }
 
+    /**
+     * Carga los datos de la noticia para editar.
+     *
+     * @param int $id ID de la noticia a editar.
+     */
+    // Esta función se llama cuando se recibe el evento 'editarNoticia'
     public function editarNoticia($id)
     {
         $noticia = \App\Models\Noticias::findOrFail($id);

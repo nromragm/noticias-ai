@@ -5,7 +5,7 @@
             Has cancelado el proceso de pago. Puedes seguir usando la app con las funcionalidades actuales.
         </p>
         <a href="{{ route('noticias.index') }}"
-        class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition">
+        class="bg-blue-600 hover:bg-blue-700 text-white hover:text-white px-4 py-2 rounded shadow transition font-semibold inline-block">
             Volver al inicio
         </a>
     </div>

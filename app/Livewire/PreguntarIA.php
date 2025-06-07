@@ -24,7 +24,7 @@ class PreguntarIA extends Component
      */
     public function preguntar()
     {
-        $contenido = "Noticia: {$this->noticia->titulo}\n{$this->noticia->descripcion}\n\nPregunta: {$this->pregunta}";
+        $contenido = "Noticia: {$this->noticia->titulo}\n{$this->noticia->contenido}\n\nPregunta: {$this->pregunta}";
         $user = auth()->user();
         $modelo = ($user && $user->is_premium) ? 'gpt-4-turbo' : 'gpt-3.5-turbo';
 
