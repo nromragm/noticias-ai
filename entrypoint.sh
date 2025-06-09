@@ -9,7 +9,7 @@ if [ ! -f .env ]; then
 fi
 php artisan key:generate --force
 
-# Ejecuta migraciones (opcional, quítalo si no quieres migrar siempre)
+# Ejecuta migraciones
 php artisan migrate --force
 
 # Limpia cachés
