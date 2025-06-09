@@ -25,6 +25,7 @@ RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 # Exponer el puerto por defecto de PHP-FPM
 EXPOSE 9000
 
+# Copia el script de entrada y lo hace ejecutable
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 

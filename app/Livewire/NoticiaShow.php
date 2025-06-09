@@ -7,6 +7,9 @@ use App\Models\Comentarios;
 use App\Models\User;
 use Livewire\Component;
 
+/**
+ * Componente Livewire para mostrar una noticia específica y sus comentarios.
+ */
 class NoticiaShow extends Component
 {
     public Noticias $noticia;

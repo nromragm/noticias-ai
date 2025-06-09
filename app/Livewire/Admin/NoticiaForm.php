@@ -15,16 +15,32 @@ class NoticiaForm extends Component
     public $categoria = '';
     public $source = '';
     public $urlImg = '';
+    public $urlVideo = '';
     public $categorias = [];
 
-    protected $rules = [
-        'titulo' => 'required|string|max:255',
-        'descripcion' => 'required|string|max:255',
-        'contenido' => 'required|string',
-        'categoria' => 'required|string|max:100',
-        'source' => 'required|string|max:100',
-        'urlImg' => 'required|url|max:255',
-    ];
+    
+    // Esta función define las reglas de validación para los campos del formulario
+    protected function rules()
+    {
+        return [
+            'titulo' => 'required|string|max:255',
+            'descripcion' => 'required|string|max:255',
+            'contenido' => 'required|string',
+            'categoria' => 'required|string|max:100',
+            'source' => 'required|string|max:100',
+            'urlImg' => 'required|url|max:255',
+            'urlVideo' => [
+                'nullable',
+                'url',
+                'max:255',
+                function ($attribute, $value, $fail) {
+                    if ($value && !preg_match('/^https:\/\/(www\.)?youtube\.com\/embed\/[a-zA-Z0-9_-]+$/', $value)) {
+                        $fail('La URL del vídeo debe ser una URL de YouTube en formato embed.');
+                    }
+                }
+            ],
+        ];
+    }
 
     protected $listeners = ['editarNoticia'];
 
@@ -46,6 +62,7 @@ class NoticiaForm extends Component
             $this->categoria = $noticia->categoria;
             $this->source = $noticia->source;
             $this->urlImg = $noticia->urlImg;
+            $this->urlVideo = $noticia->urlVideo;
         }
     }
 
@@ -65,6 +82,7 @@ class NoticiaForm extends Component
         $this->categoria = $noticia->categoria;
         $this->source = $noticia->source;
         $this->urlImg = $noticia->urlImg;
+        $this->urlVideo = $noticia->urlVideo;
     }
 
 
@@ -105,7 +123,7 @@ class NoticiaForm extends Component
      */
     public function save()
     {
-        $this->validate();
+        $this->validate($this->rules());
 
         try {
             if ($this->noticiaId) {
@@ -117,6 +135,7 @@ class NoticiaForm extends Component
                     'categoria' => $this->categoria,
                     'source' => $this->source,
                     'urlImg' => $this->urlImg,
+                    'urlVideo' => $this->urlVideo,
                 ]);
                 session()->flash('success', 'Noticia actualizada correctamente.');
             } else {
@@ -127,12 +146,13 @@ class NoticiaForm extends Component
                     'categoria' => $this->categoria,
                     'source' => $this->source,
                     'urlImg' => $this->urlImg,
+                    'urlVideo' => $this->urlVideo,
                     'published_at' => now(),
                 ]);
                 session()->flash('success', 'Noticia añadida correctamente.');
             }
 
-            $this->reset(['noticiaId', 'titulo', 'descripcion', 'contenido', 'categoria', 'source', 'urlImg']);
+            $this->reset(['noticiaId', 'titulo', 'descripcion', 'contenido', 'categoria', 'source', 'urlImg', 'urlVideo']);
             $this->dispatch('noticiaGuardada');
         } catch (\Exception $e) {
             session()->flash('error', 'Error al guardar la noticia: ' . $e->getMessage());

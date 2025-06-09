@@ -12,6 +12,14 @@
                 </div>
             @endif
 
+            {{-- Video opcional --}}
+            @if($noticia->urlVideo)
+                <div class="w-full flex justify-center mb-4 sm:mb-6">
+                    <iframe src="{{ $noticia->urlVideo }}" frameborder="0" allowfullscreen
+                        class="rounded-lg shadow-md w-full max-w-xl h-60 sm:h-96"></iframe>
+                </div>
+            @endif
+
             <p class="text-base sm:text-lg text-gray-700 dark:text-gray-200 mb-4 sm:mb-6 italic text-center break-words">
                 {{ $noticia->descripcion }}
             </p>

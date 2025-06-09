@@ -22,6 +22,7 @@ class Noticias extends Model
         'descripcion',
         'url',
         'urlImg',
+        'urlVideo',
         'contenido',
         'source',
         'published_at',

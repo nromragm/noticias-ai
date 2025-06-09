@@ -79,6 +79,11 @@
             <input type="url" wire:model.defer="urlImg" class="w-full rounded border-gray-300 dark:bg-gray-900 dark:text-gray-100 focus:ring focus:ring-blue-200">
             @error('urlImg') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
         </div>
+        <div>
+            <label class="block text-sm font-medium mb-1">URL Video (opcional)</label>
+            <input type="url" wire:model.defer="urlVideo" class="w-full rounded border-gray-300 dark:bg-gray-900 dark:text-gray-100 focus:ring focus:ring-blue-200">
+            @error('urlVideo') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+        </div>
         <div class="flex justify-end">
             <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded shadow transition font-semibold">
                 Guardar Noticia

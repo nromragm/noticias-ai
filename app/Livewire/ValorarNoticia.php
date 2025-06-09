@@ -26,6 +26,12 @@ public Noticias $noticia;
         }
     }
 
+    /**
+     * Valorar la noticia.
+     * Validar que el usuario ha iniciado sesión y que el valor es un número entre 1 y 5.
+     * Si el usuario ya ha valorado la noticia, actualizar su valoración.
+     * Si no, crear una nueva valoración.
+     */
     public function valorar()
     {
         $this->validate([
