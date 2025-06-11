@@ -80,6 +80,19 @@
             @error('urlImg') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
         </div>
         <div>
+            <label class="block text-sm font-medium mb-1">Subir Imagen</label>
+            <input type="file" wire:model="img" accept="image/*"
+                class="w-full rounded border-gray-300 dark:bg-gray-900 dark:text-gray-100 focus:ring focus:ring-blue-200">
+            @error('img') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+
+            @if ($img)
+                <div class="mt-2">
+                    <span class="text-xs text-gray-500 dark:text-gray-400">Previsualización:</span>
+                    <img src="{{ $img->temporaryUrl() }}" class="mt-1 max-h-40 rounded shadow border border-gray-200 dark:border-gray-700">
+                </div>
+            @endif
+        </div>
+        <div>
             <label class="block text-sm font-medium mb-1">URL Video (opcional)</label>
             <input type="url" wire:model.defer="urlVideo" class="w-full rounded border-gray-300 dark:bg-gray-900 dark:text-gray-100 focus:ring focus:ring-blue-200">
             @error('urlVideo') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror

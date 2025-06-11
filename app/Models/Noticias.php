@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Noticias extends Model
 {
+    use HasFactory;
+    
     public const CATEGORIAS = [
         'business',
         'entertainment',
@@ -27,6 +29,7 @@ class Noticias extends Model
         'source',
         'published_at',
         'categoria',
+        'img'
     ];
 
     public function comentarios()

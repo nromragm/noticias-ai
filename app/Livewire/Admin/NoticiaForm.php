@@ -5,9 +5,14 @@ namespace App\Livewire\Admin;
 use Livewire\Component;
 use App\Models\Noticias;
 use App\Services\NewsApiService;
+use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Storage;
 
 class NoticiaForm extends Component
 {
+    use WithFileUploads;
+
+    
     public $noticiaId = null;
     public $titulo = '';
     public $descripcion = '';
@@ -16,6 +21,7 @@ class NoticiaForm extends Component
     public $source = '';
     public $urlImg = '';
     public $urlVideo = '';
+    public $img;
     public $categorias = [];
 
     
@@ -28,7 +34,8 @@ class NoticiaForm extends Component
             'contenido' => 'required|string',
             'categoria' => 'required|string|max:100',
             'source' => 'required|string|max:100',
-            'urlImg' => 'required|url|max:255',
+            'urlImg' => 'nullable|url|max:255',
+            'img' => 'nullable|image|max:2048',
             'urlVideo' => [
                 'nullable',
                 'url',
@@ -61,8 +68,10 @@ class NoticiaForm extends Component
             $this->contenido = $noticia->contenido;
             $this->categoria = $noticia->categoria;
             $this->source = $noticia->source;
-            $this->urlImg = $noticia->urlImg;
             $this->urlVideo = $noticia->urlVideo;
+            if ($noticia->urlImg) {
+                $this->img = $noticia->urlImg; // Carga la imagen existente si está disponible
+            }
         }
     }
 
@@ -81,8 +90,10 @@ class NoticiaForm extends Component
         $this->contenido = $noticia->contenido;
         $this->categoria = $noticia->categoria;
         $this->source = $noticia->source;
-        $this->urlImg = $noticia->urlImg;
         $this->urlVideo = $noticia->urlVideo;
+        if ($noticia->urlImg) {
+            $this->img = $noticia->urlImg; // Carga la imagen existente si está disponible
+        }
     }
 
 
@@ -126,6 +137,14 @@ class NoticiaForm extends Component
         $this->validate($this->rules());
 
         try {
+            
+            $imgPath = null;
+            if ($this->img && is_object($this->img)) {
+                $imgPath = $this->img->store('noticias', 'public');
+            } elseif (is_string($this->img)) {
+                $imgPath = $this->img;
+            }
+
             if ($this->noticiaId) {
                 $noticia = \App\Models\Noticias::findOrFail($this->noticiaId);
                 $noticia->update([
@@ -134,8 +153,9 @@ class NoticiaForm extends Component
                     'contenido' => $this->contenido,
                     'categoria' => $this->categoria,
                     'source' => $this->source,
-                    'urlImg' => $this->urlImg,
+                    'urlImg' => $this->urlImg ?: null,
                     'urlVideo' => $this->urlVideo,
+                    'img' => $imgPath,
                 ]);
                 session()->flash('success', 'Noticia actualizada correctamente.');
             } else {
@@ -145,14 +165,15 @@ class NoticiaForm extends Component
                     'contenido' => $this->contenido,
                     'categoria' => $this->categoria,
                     'source' => $this->source,
-                    'urlImg' => $this->urlImg,
+                    'urlImg' => $this->urlImg ?: null,
                     'urlVideo' => $this->urlVideo,
+                    'img' => $imgPath,
                     'published_at' => now(),
                 ]);
                 session()->flash('success', 'Noticia añadida correctamente.');
             }
 
-            $this->reset(['noticiaId', 'titulo', 'descripcion', 'contenido', 'categoria', 'source', 'urlImg', 'urlVideo']);
+            $this->reset(['noticiaId', 'titulo', 'descripcion', 'contenido', 'categoria', 'source', 'urlImg', 'urlVideo', 'img']);
             $this->dispatch('noticiaGuardada');
         } catch (\Exception $e) {
             session()->flash('error', 'Error al guardar la noticia: ' . $e->getMessage());

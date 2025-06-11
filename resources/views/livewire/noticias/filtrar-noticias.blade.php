@@ -45,11 +45,16 @@
             <a href="{{ route('noticias.show', $noticia->id) }}"
         class="block transition-shadow transition-colors duration-200 hover:shadow-2xl hover:border-blue-500 dark:hover:border-blue-400">
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden flex flex-col min-h-[28rem] border border-gray-100 dark:border-gray-700">
-                @if($noticia->urlImg)
+                @if($noticia->img)
+                    <img src="{{ asset('storage/' . $noticia->img) }}"
+                        alt="{{ $noticia->titulo }}"
+                        class="w-full h-48 object-cover flex-shrink-0">
+                @elseif($noticia->urlImg)
                     <img src="{{ $noticia->urlImg }}"
                         alt="{{ $noticia->titulo }}"
                         class="w-full h-48 object-cover flex-shrink-0">
                 @endif
+
                 <div class="p-4 flex-1 flex flex-col">
                     <h2 class="text-lg font-semibold mb-2 text-gray-900 dark:text-white">{{ $noticia->titulo }}</h2>
                     <p class="text-sm text-gray-600 dark:text-gray-300 mb-3 flex-1 overflow-hidden">
